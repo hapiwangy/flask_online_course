@@ -1,6 +1,5 @@
 # we need db model for user and notes
 # import 那個SQLALchemy物件而非其他的不知道甚麼咚咚
-from time import timezone
 from . import db
 # 可以繼承的東東，方便我們使用
 # 如果做其他用途就不會import 了
@@ -14,7 +13,7 @@ class Note(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     data = db.Column(db.String(10000))
     # 讓sqlalchemy自己幫我們決定時間，我們不用自己處裡
-    data = db.Column(db.Datetime(timezone=True), default = func.now)
+    date = db.Column(db.DateTime(timezone=True), default = func.now())
     # associate不同的note with different user
     # 透過foreign key
     # one to many data model
@@ -28,7 +27,7 @@ class User(db.Model, UserMixin):
     # 設定為string的時候要限制長度
     # 設定unique代表任何重複的email是不被允許的
     email = db.Column(db.String(150), unique=True)
-    password = db.Column(db.string(150))
+    password = db.Column(db.String(150))
     firstName = db.Column(db.String(150))
     # 告訴sqlalchemy說，每次只要建立一個note，就要和正確的user建立連結
     # 這裡使用的是那個class的名稱
